@@ -1,0 +1,12 @@
+.repo-root {
+  width: 31%;
+  margin: 5px;
+  background-color: #eaeaea;
+  height: 200px;
+}
+
+@media (max-width: 768px) {
+  .repo-root {
+    width: 48%;
+  }
+}
