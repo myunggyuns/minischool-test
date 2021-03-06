@@ -6,19 +6,22 @@ import {
 } from "../action/SearchActionTypes";
 
 type QueryState = {
-  query: string;
+  q: string;
   entity: string;
+  items: [];
 };
 
 type QueryAction = {
   type: string;
   query: string;
   entity: string;
+  items: [];
 };
 
 const initialState: QueryState = {
-  query: "",
-  entity: "user",
+  q: "",
+  entity: "users",
+  items: [],
 };
 
 export const searchReducer = (
@@ -30,10 +33,10 @@ export const searchReducer = (
       return initialState;
 
     case REQUEST_SEARCH_USER_REPO:
-      return state;
+      return { ...state, items: action.items };
 
     case ENTER_QUERY:
-      return { ...state, query: action.query };
+      return { ...state, q: action.query };
 
     case CHANGE_ENTITY:
       return { ...state, entity: action.entity };

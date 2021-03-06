@@ -1,14 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { enterQuery, clear, changeEntity } from "../redux/action/SearchAction";
 import RepoListView from "./RepoListView";
+import UserListView from "./UserListView";
 import githubImage from "../image/github.jpg";
 import "../styles/search.css";
-import { dummydata } from "../dummydata/dummydata";
+import { searchRepo } from "../rest/SearchAPI";
+
+type ReducerState = {
+  searchReducer: {
+    q: string;
+    entity: string;
+  };
+};
 
 const Search = () => {
-  const dispatch: any = useDispatch();
-  const inputQuery: any = useSelector((state: any) => state.searchReducer);
+  const dispatch: Function = useDispatch();
+  const q: any = useSelector((state: ReducerState) => state.searchReducer.q);
+  const entity: any = useSelector(
+    (state: ReducerState) => state.searchReducer.entity
+  );
+  const [repoData, getRepoData] = useState<[]>([]);
+
+  useEffect(() => {
+    if (q.length > 2 && entity) {
+      var data;
+      const fetchData = async () => {
+        data = await searchRepo(entity, { q: `${q}` });
+        getRepoData(data.items);
+      };
+      fetchData();
+    }
+  }, [q, entity]);
+
+  console.log(entity);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -19,6 +44,7 @@ const Search = () => {
       dispatch(enterQuery(value));
     } else if (value.length === 0) {
       dispatch(clear());
+      getRepoData([]);
     }
   };
 
@@ -26,10 +52,7 @@ const Search = () => {
     const {
       target: { value },
     } = e;
-
-    if (inputQuery.query.length > 2) {
-      dispatch(changeEntity(value));
-    }
+    dispatch(changeEntity(value));
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -52,17 +75,24 @@ const Search = () => {
             onChange={onChange}
             placeholder="Starting typing to search .."
           />
-          <select className="form-select" onChange={onChangeOption}>
-            <option value="user">User</option>
-            <option value="repository">Repository</option>
+          <select
+            className="form-select"
+            onChange={onChangeOption}
+            value={entity}
+          >
+            <option value="users">Users</option>
+            <option value="repositories">repositories</option>
           </select>
         </form>
       </div>
       <div className="repo-list">
-        {inputQuery.query &&
-          dummydata.map((data: any) => (
-            <RepoListView key={data.id} data={data} />
-          ))}
+        {repoData && entity === "users"
+          ? repoData.map((data: any) => (
+              <UserListView key={data.id} data={data} />
+            ))
+          : repoData.map((data: any) => (
+              <RepoListView key={data.id} data={data} />
+            ))}
       </div>
     </div>
   );

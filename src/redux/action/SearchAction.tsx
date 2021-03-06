@@ -5,9 +5,9 @@ import {
   CLEAR,
 } from "./SearchActionTypes";
 
-export const getRepo = (query: object) => ({
+export const getRepo = (items: []) => ({
   type: REQUEST_SEARCH_USER_REPO,
-  query,
+  items,
 });
 
 export const enterQuery = (query: string) => ({

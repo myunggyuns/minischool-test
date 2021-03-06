@@ -3,10 +3,32 @@
   margin: 5px;
   background-color: #eaeaea;
   height: 200px;
+  padding: 5px;
+  z-index: 10;
+}
+
+.text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 5px 0;
+}
+
+.text:hover {
+  overflow: visible;
+  display: block;
+  z-index: 100;
+  margin: 5px 0;
 }
 
 @media (max-width: 768px) {
   .repo-root {
     width: 48%;
+  }
+}
+
+@media (max-width: 655px) {
+  .repo-root {
+    width: 45%;
   }
 }
