@@ -3,12 +3,15 @@ import {
   ENTER_QUERY,
   CLEAR,
   CHANGE_ENTITY,
+  ADDPAGE,
 } from "../action/SearchActionTypes";
+import { addMoreData } from "../../Utils/AddDataUtils";
 
 type QueryState = {
   q: string;
   entity: string;
   items: [];
+  page: number;
 };
 
 type QueryAction = {
@@ -16,12 +19,14 @@ type QueryAction = {
   query: string;
   entity: string;
   items: [];
+  page: number;
 };
 
 const initialState: QueryState = {
   q: "",
   entity: "users",
   items: [],
+  page: 1,
 };
 
 export const searchReducer = (
@@ -33,7 +38,17 @@ export const searchReducer = (
       return initialState;
 
     case REQUEST_SEARCH_USER_REPO:
-      return { ...state, items: action.items };
+      return {
+        ...state,
+        items: addMoreData(state.items, action.items, state.page),
+        page: action.page,
+      };
+
+    case ADDPAGE:
+      return {
+        ...state,
+        page: state.page + 1,
+      };
 
     case ENTER_QUERY:
       return { ...state, q: action.query };

@@ -4,7 +4,6 @@ import "../styles/userlistview.css";
 type Props = {
   key: number;
   data: {
-    id: number;
     login: string;
     repo: string;
     avatar_url: string;

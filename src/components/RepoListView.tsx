@@ -4,9 +4,7 @@ import "../styles/repolistview.css";
 type Props = {
   key: number;
   data: {
-    id: number;
     name: string;
-    repo: string;
     stargazers_count: number;
     full_name: string;
     html_url: string;

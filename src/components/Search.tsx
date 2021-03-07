@@ -1,6 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { enterQuery, clear, changeEntity } from "../redux/action/SearchAction";
+import {
+  enterQuery,
+  clear,
+  changeEntity,
+  getRepo,
+  addPage,
+} from "../redux/action/SearchAction";
 import RepoListView from "./RepoListView";
 import UserListView from "./UserListView";
 import githubImage from "../image/github.jpg";
@@ -11,29 +17,31 @@ type ReducerState = {
   searchReducer: {
     q: string;
     entity: string;
+    items: [];
   };
 };
 
 const Search = () => {
   const dispatch: Function = useDispatch();
-  const q: any = useSelector((state: ReducerState) => state.searchReducer.q);
-  const entity: any = useSelector(
-    (state: ReducerState) => state.searchReducer.entity
+  const searchData: any = useSelector(
+    (state: ReducerState) => state.searchReducer
   );
-  const [repoData, getRepoData] = useState<[]>([]);
 
   useEffect(() => {
-    if (q.length > 2 && entity) {
-      var data;
-      const fetchData = async () => {
-        data = await searchRepo(entity, { q: `${q}` });
-        getRepoData(data.items);
-      };
-      fetchData();
-    }
-  }, [q, entity]);
+    var data;
+    const fetchData = async (q: string, page: number) => {
+      data = await searchRepo(searchData.entity, {
+        q: q,
+        page: page,
+      });
 
-  console.log(entity);
+      dispatch(getRepo(data.items, page));
+    };
+
+    if (searchData.q.length > 2) {
+      fetchData(searchData.q, searchData.page);
+    }
+  }, [searchData.page, searchData.q, dispatch, searchData.entity]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -42,9 +50,8 @@ const Search = () => {
 
     if (value.length > 2) {
       dispatch(enterQuery(value));
-    } else if (value.length === 0) {
+    } else if (value.length <= 2) {
       dispatch(clear());
-      getRepoData([]);
     }
   };
 
@@ -58,6 +65,18 @@ const Search = () => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
+
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      const innerHeight = window.innerHeight;
+      const scrollTop = document.documentElement.scrollTop;
+      const offsetHeight = document.documentElement.offsetHeight;
+
+      if (innerHeight + scrollTop === offsetHeight) {
+        dispatch(addPage());
+      }
+    });
+  }, [dispatch]);
 
   return (
     <div className="root">
@@ -78,7 +97,7 @@ const Search = () => {
           <select
             className="form-select"
             onChange={onChangeOption}
-            value={entity}
+            value={searchData.entity}
           >
             <option value="users">Users</option>
             <option value="repositories">repositories</option>
@@ -86,11 +105,13 @@ const Search = () => {
         </form>
       </div>
       <div className="repo-list">
-        {repoData && entity === "users"
-          ? repoData.map((data: any) => (
+        {searchData.entity === "users"
+          ? searchData.items &&
+            searchData.items.map((data: any) => (
               <UserListView key={data.id} data={data} />
             ))
-          : repoData.map((data: any) => (
+          : searchData.items &&
+            searchData.items.map((data: any) => (
               <RepoListView key={data.id} data={data} />
             ))}
       </div>
