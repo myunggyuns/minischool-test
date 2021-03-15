@@ -1,16 +1,10 @@
 import {
   ENTER_QUERY,
   CHANGE_ENTITY,
-  REQUEST_SEARCH_USER_REPO,
   CLEAR,
   ADDPAGE,
+  CLEARPAGE,
 } from "./SearchActionTypes";
-
-export const getRepo = (items: [], page: number) => ({
-  type: REQUEST_SEARCH_USER_REPO,
-  items,
-  page,
-});
 
 export const enterQuery = (query: string) => ({
   type: ENTER_QUERY,
@@ -28,4 +22,8 @@ export const clear = () => ({
 
 export const addPage = () => ({
   type: ADDPAGE,
+});
+
+export const clearPage = () => ({
+  type: CLEARPAGE,
 });

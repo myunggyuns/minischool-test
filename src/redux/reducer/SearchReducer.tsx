@@ -1,10 +1,15 @@
 import {
-  REQUEST_SEARCH_USER_REPO,
   ENTER_QUERY,
   CLEAR,
   CHANGE_ENTITY,
   ADDPAGE,
+  CLEARPAGE,
 } from "../action/SearchActionTypes";
+import {
+  REQUEST_SEARCH_USER_REPO,
+  SUCCEED_SEARCH_USER_REPO,
+  FAIL_SEARCH_USER_REPO,
+} from "../action/SearchAPIActionTypes";
 import { addMoreData } from "../../Utils/AddDataUtils";
 
 type QueryState = {
@@ -12,6 +17,8 @@ type QueryState = {
   entity: string;
   items: [];
   page: number;
+  isLoading: boolean;
+  error: null | {};
 };
 
 type QueryAction = {
@@ -20,6 +27,8 @@ type QueryAction = {
   entity: string;
   items: [];
   page: number;
+  isLoading: boolean;
+  error: null | {};
 };
 
 const initialState: QueryState = {
@@ -27,6 +36,8 @@ const initialState: QueryState = {
   entity: "users",
   items: [],
   page: 1,
+  isLoading: false,
+  error: null,
 };
 
 export const searchReducer = (
@@ -40,14 +51,34 @@ export const searchReducer = (
     case REQUEST_SEARCH_USER_REPO:
       return {
         ...state,
+        isLoading: true,
+      };
+
+    case SUCCEED_SEARCH_USER_REPO:
+      return {
+        ...state,
         items: addMoreData(state.items, action.items, state.page),
         page: action.page,
+        isLoading: false,
+      };
+
+    case FAIL_SEARCH_USER_REPO:
+      return {
+        ...state,
+        error: action.error,
+        isLoading: false,
       };
 
     case ADDPAGE:
       return {
         ...state,
         page: state.page + 1,
+      };
+
+    case CLEARPAGE:
+      return {
+        ...state,
+        page: 1,
       };
 
     case ENTER_QUERY:

@@ -4,9 +4,10 @@ import {
   enterQuery,
   clear,
   changeEntity,
-  getRepo,
   addPage,
+  clearPage,
 } from "../redux/action/SearchAction";
+import { getRepo } from "../redux/action/SearchAPIAction";
 import RepoListView from "./RepoListView";
 import UserListView from "./UserListView";
 import githubImage from "../image/github.jpg";
@@ -29,12 +30,13 @@ const Search = () => {
 
   useEffect(() => {
     var data;
+    let preveQuery = searchData.q;
+    console.log(searchData.q, preveQuery);
     const fetchData = async (q: string, page: number) => {
       data = await searchRepo(searchData.entity, {
         q: q,
         page: page,
       });
-
       dispatch(getRepo(data.items, page));
     };
 
@@ -49,7 +51,13 @@ const Search = () => {
     } = e;
 
     if (value.length > 2) {
-      dispatch(enterQuery(value));
+      let preveQuery = searchData.q;
+      setTimeout(() => {
+        if (preveQuery !== value) {
+          dispatch(clearPage());
+        }
+        dispatch(enterQuery(value));
+      }, 500);
     } else if (value.length <= 2) {
       dispatch(clear());
     }
