@@ -18,7 +18,7 @@ type QueryState = {
   items: [];
   page: number;
   isLoading: boolean;
-  error: null | {};
+  errors: null | {};
 };
 
 type QueryAction = {
@@ -28,7 +28,7 @@ type QueryAction = {
   items: [];
   page: number;
   isLoading: boolean;
-  error: null | {};
+  errors: null | {};
 };
 
 const initialState: QueryState = {
@@ -37,7 +37,7 @@ const initialState: QueryState = {
   items: [],
   page: 1,
   isLoading: false,
-  error: null,
+  errors: null,
 };
 
 export const searchReducer = (
@@ -65,7 +65,7 @@ export const searchReducer = (
     case FAIL_SEARCH_USER_REPO:
       return {
         ...state,
-        error: action.error,
+        errors: action.errors,
         isLoading: false,
       };
 

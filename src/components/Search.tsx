@@ -7,12 +7,11 @@ import {
   addPage,
   clearPage,
 } from "../redux/action/SearchAction";
-import { getRepo } from "../redux/action/SearchAPIAction";
 import RepoListView from "./RepoListView";
 import UserListView from "./UserListView";
 import githubImage from "../image/github.jpg";
 import "../styles/search.css";
-import { searchRepo } from "../rest/SearchAPI";
+import { getRepositories } from "../redux/thunk/thunk";
 
 type ReducerState = {
   searchReducer: {
@@ -29,19 +28,13 @@ const Search = () => {
   );
 
   useEffect(() => {
-    var data;
-    let preveQuery = searchData.q;
-    console.log(searchData.q, preveQuery);
-    const fetchData = async (q: string, page: number) => {
-      data = await searchRepo(searchData.entity, {
-        q: q,
-        page: page,
-      });
-      dispatch(getRepo(data.items, page));
+    window.onbeforeunload = function () {
+      dispatch(clearPage());
+      window.scrollTo(0, 0);
     };
 
     if (searchData.q.length > 2) {
-      fetchData(searchData.q, searchData.page);
+      dispatch(getRepositories());
     }
   }, [searchData.page, searchData.q, dispatch, searchData.entity]);
 
@@ -55,8 +48,8 @@ const Search = () => {
       setTimeout(() => {
         if (preveQuery !== value) {
           dispatch(clearPage());
+          dispatch(enterQuery(value));
         }
-        dispatch(enterQuery(value));
       }, 500);
     } else if (value.length <= 2) {
       dispatch(clear());
@@ -114,12 +107,10 @@ const Search = () => {
       </div>
       <div className="repo-list">
         {searchData.entity === "users"
-          ? searchData.items &&
-            searchData.items.map((data: any) => (
+          ? searchData.items.map((data: any) => (
               <UserListView key={data.id} data={data} />
             ))
-          : searchData.items &&
-            searchData.items.map((data: any) => (
+          : searchData.items.map((data: any) => (
               <RepoListView key={data.id} data={data} />
             ))}
       </div>

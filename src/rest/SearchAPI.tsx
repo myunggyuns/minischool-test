@@ -12,8 +12,8 @@ export const searchRepo = async (entity: string, queryObj: any) => {
     if (result.message) {
       alert(`${result.message}  check serach text`);
     }
-    return result;
+    return result.items;
   } catch (error) {
-    alert("Server Error");
+    return error;
   }
 };

@@ -3,14 +3,12 @@ export function addMoreData(oldData: [], newData: [], page: number) {
     return newData;
   }
 
-  let results: [] = oldData ? oldData : [];
-
   newData &&
     newData.forEach(item => {
-      if (oldData && results.indexOf(item) === -1) {
-        results.push(item);
+      if (oldData && oldData.indexOf(item) === -1) {
+        oldData.push(item);
       }
     });
 
-  return results;
+  return oldData;
 }

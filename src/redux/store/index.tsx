@@ -4,6 +4,7 @@ import ReduxThunk from "redux-thunk";
 import { persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
+import { composeWithDevTools } from "redux-devtools-extension";
 
 const persistConfig = {
   key: "root",
@@ -14,6 +15,6 @@ const enhancedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store: any = createStore(
   enhancedReducer,
-  applyMiddleware(ReduxThunk)
+  composeWithDevTools(applyMiddleware(ReduxThunk))
 );
 export const persistor = persistStore(store);
