@@ -12,6 +12,7 @@ import UserListView from "./UserListView";
 import githubImage from "../image/github.jpg";
 import "../styles/search.css";
 import { getRepositories } from "../redux/thunk/thunk";
+import Loading from "./Common/Loading";
 
 type ReducerState = {
   searchReducer: {
@@ -36,7 +37,18 @@ const Search = () => {
     if (searchData.q.length > 2) {
       dispatch(getRepositories());
     }
-  }, [searchData.page, searchData.q, dispatch, searchData.entity]);
+
+    if (searchData.error) {
+      alert(`${searchData.error}`);
+      dispatch(clear());
+    }
+  }, [
+    searchData.page,
+    searchData.q,
+    dispatch,
+    searchData.entity,
+    searchData.error,
+  ]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -107,13 +119,16 @@ const Search = () => {
       </div>
       <div className="repo-list">
         {searchData.entity === "users"
-          ? searchData.items.map((data: any) => (
+          ? searchData.items &&
+            searchData.items.map((data: any) => (
               <UserListView key={data.id} data={data} />
             ))
-          : searchData.items.map((data: any) => (
+          : searchData.items &&
+            searchData.items.map((data: any) => (
               <RepoListView key={data.id} data={data} />
             ))}
       </div>
+      <Loading open={searchData.isLoading} />
     </div>
   );
 };

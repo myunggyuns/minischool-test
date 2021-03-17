@@ -17,6 +17,6 @@ export const getRepositories = () => async (dispatch: any, getState: any) => {
     });
     dispatch(getRepo(data, page));
   } catch (e) {
-    dispatch({ type: FAIL_SEARCH_USER_REPO, errors: e });
+    dispatch({ type: FAIL_SEARCH_USER_REPO, error: e });
   }
 };
