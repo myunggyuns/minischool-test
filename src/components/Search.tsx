@@ -31,7 +31,6 @@ const Search = () => {
   useEffect(() => {
     window.onbeforeunload = function () {
       dispatch(clearPage());
-      window.scrollTo(0, 0);
     };
 
     if (searchData.q.length > 2) {

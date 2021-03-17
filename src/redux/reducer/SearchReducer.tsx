@@ -63,7 +63,6 @@ export const searchReducer = (
       };
 
     case FAIL_SEARCH_USER_REPO:
-      console.log(action);
       return {
         ...state,
         error: action.error,
