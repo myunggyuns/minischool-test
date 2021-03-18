@@ -5,7 +5,7 @@ export function addMoreData(oldData: [], newData: [], page: number) {
 
   newData &&
     newData.forEach(item => {
-      if (oldData && oldData.indexOf(item) === -1) {
+      if (oldData.indexOf(item) === -1) {
         oldData.push(item);
       }
     });
