@@ -72,11 +72,8 @@
   flex-wrap: wrap;
 }
 
-@media (max-width: 655px) {
+@media (max-width: 440px) {
   .root {
     width: 100%;
-  }
-  .repo-list {
-    min-width: 655px;
   }
 }

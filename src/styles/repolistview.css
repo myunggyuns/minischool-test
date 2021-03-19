@@ -1,5 +1,6 @@
 .repo-root {
-  width: 31%;
+  flex: 1 1 auto;
+  width: 30%;
   margin: 5px;
   background-color: #eaeaea;
   height: 200px;
@@ -23,12 +24,6 @@
 
 @media (max-width: 768px) {
   .repo-root {
-    width: 48%;
-  }
-}
-
-@media (max-width: 655px) {
-  .repo-root {
-    width: 45%;
+    width: 46.5%;
   }
 }

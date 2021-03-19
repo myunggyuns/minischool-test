@@ -4,6 +4,7 @@ import {
   CLEAR,
   ADDPAGE,
   CLEARPAGE,
+  GET_SCROLL_LOCATION,
 } from "./SearchActionTypes";
 
 export const enterQuery = (query: string) => ({
@@ -26,4 +27,9 @@ export const addPage = () => ({
 
 export const clearPage = () => ({
   type: CLEARPAGE,
+});
+
+export const getScrollY = (yLocation: number) => ({
+  type: GET_SCROLL_LOCATION,
+  yLocation,
 });

@@ -1,6 +1,8 @@
 .user-root {
-  width: 31%;
+  flex: 1 1 auto;
+  width: 30%;
   margin: 5px;
+  margin-bottom: 10px;
   background-color: #eaeaea;
   height: 250px;
   padding: 5px;
@@ -46,13 +48,7 @@
 }
 
 @media (max-width: 768px) {
-  .user-root {
-    width: 48%;
-  }
-}
-
-@media (max-width: 655px) {
-  .user-root {
-    width: 45%;
+  .repo-root {
+    width: 46.5%;
   }
 }

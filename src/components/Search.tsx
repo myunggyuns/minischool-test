@@ -6,6 +6,7 @@ import {
   changeEntity,
   addPage,
   clearPage,
+  getScrollY,
 } from "../redux/action/SearchAction";
 import RepoListView from "./RepoListView";
 import UserListView from "./UserListView";
@@ -31,6 +32,8 @@ const Search = () => {
   useEffect(() => {
     window.onbeforeunload = function () {
       dispatch(clearPage());
+      dispatch(getScrollY(window.scrollY));
+      window.scrollTo(0, searchData.yLocation - 150);
     };
 
     if (searchData.q.length > 2) {
@@ -47,6 +50,7 @@ const Search = () => {
     dispatch,
     searchData.entity,
     searchData.error,
+    searchData.yLocation,
   ]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

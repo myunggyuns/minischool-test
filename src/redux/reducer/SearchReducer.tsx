@@ -4,6 +4,7 @@ import {
   CHANGE_ENTITY,
   ADDPAGE,
   CLEARPAGE,
+  GET_SCROLL_LOCATION,
 } from "../action/SearchActionTypes";
 import {
   REQUEST_SEARCH_USER_REPO,
@@ -19,6 +20,7 @@ type QueryState = {
   page: number;
   isLoading: boolean;
   error: null | {};
+  yLocation: number;
 };
 
 type QueryAction = {
@@ -29,6 +31,7 @@ type QueryAction = {
   page: number;
   isLoading: boolean;
   error: null | {};
+  yLocation: number;
 };
 
 const initialState: QueryState = {
@@ -38,6 +41,7 @@ const initialState: QueryState = {
   page: 1,
   isLoading: false,
   error: null,
+  yLocation: 0,
 };
 
 export const searchReducer = (
@@ -86,6 +90,9 @@ export const searchReducer = (
 
     case CHANGE_ENTITY:
       return { ...state, entity: action.entity };
+
+    case GET_SCROLL_LOCATION:
+      return { ...state, yLocation: action.yLocation };
 
     default:
       return state;
