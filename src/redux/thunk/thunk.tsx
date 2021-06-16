@@ -6,6 +6,8 @@ export const getRepositories = () => async (dispatch: any, getState: any) => {
 
   dispatch(requestRepo());
 
+  //redux thunk
+
   try {
     const data = await searchRepo(entity, {
       q: q,
